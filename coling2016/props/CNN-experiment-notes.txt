@@ -1,0 +1,15 @@
+=======
+CNN for our text classification - reference paper?
+
+=======
+Experimental data preprocessing setups - 4
+i. Vanilla
+ii. Vanilla + #NUM# substitution
+iii. Pretrained Word Embedding
+iv. Pretrained Word Embedding + #NUM# substitution
+
+=======
+Pretraining of data in CNN - reference paper?
+
+For me:
+Pros and cons of CNN vs GBT: Data imbalance vs predictive power 

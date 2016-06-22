@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: RITB-hitax-coling16.aux
+The style file: acl.bst
+Database file #1: RITB-hitax-coling16.bib
+Warning--I didn't find a database entry for "Gusfield:97"
+Warning--I didn't find a database entry for "Aho:72"
+Warning--I didn't find a database entry for "Chandra:81"
+Warning--I didn't find a database entry for "APA:83"
+Warning--I didn't find a database entry for "ACM:83"
+You've used 3 entries,
+            2490 wiz_defined-function locations,
+            582 strings with 5179 characters,
+and the built_in function-call counts, 1191 in all, are:
+= -- 113
+> -- 64
+< -- 0
++ -- 22
+- -- 22
+* -- 90
+:= -- 210
+add.period$ -- 12
+call.type$ -- 3
+change.case$ -- 23
+chr.to.int$ -- 3
+cite$ -- 3
+duplicate$ -- 50
+empty$ -- 87
+format.name$ -- 25
+if$ -- 240
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 3
+newline$ -- 21
+num.names$ -- 9
+pop$ -- 25
+preamble$ -- 1
+purify$ -- 26
+quote$ -- 0
+skip$ -- 35
+stack$ -- 0
+substring$ -- 15
+swap$ -- 8
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 24
+warning$ -- 0
+while$ -- 6
+width$ -- 5
+write$ -- 45
+(There were 5 warnings)
