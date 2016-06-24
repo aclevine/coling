@@ -1,0 +1,14 @@
+=====
+Slice
+=====
+Classifiers	NB	SGD with EN	LogReg with L1	GBT	CNN with pretraining	CNN vanillaPearson Correlation Coefficient	-0.228	-0.071	-0.052	-0.122	-0.110	-0.133
+
+============
+AmazonJulian
+============
+Classifiers	NB	SGD with EN	LogReg with L1	GBT	CNN with pretrainingPearson Correlation Coefficient	0.107	0.006	0.101	-0.029	0.083
+
+======
+Ebates
+======
+Classifiers	NB	SGD with EN	LogReg with L1	GBT	CNN with pretrainingPearson Correlation Coefficient	-0.470	-0.365	-0.335	-0.356
