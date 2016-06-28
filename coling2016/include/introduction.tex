@@ -29,12 +29,12 @@ In this paper, we focus on taxonomy classification of listings in order to solve
 Generally, merchants interested in publishing their listings to an online e-commerce platform, pushes their feed to an intelligent indexing engine which then are ready to be consumed by the end user in a variety of ways.
 Scalable and accurate taxonomy categorization of listings is often among the earliest core annotation steps for these platforms.
 Feeds usually come in at 10-20 million listings/day for mid scale e-commerce companies.
-Most of these listings are for the same product but vary in pricing and stores.
 
-Our problem here is to classify each test instance (listing), $\mathbf{x}_m$ in Fig. \ref{Fig:push-pull}, into the correct taxonomy branch, $\mathbf{y}_l$ e.g. ``\textit{Shoes $\rightarrow$ Women's Shoes $\rightarrow$ Comfort}''.
+Our problem here is to classify each test instance (listing), $\bm{x}_m$ in Fig. \ref{Fig:push-pull}, into the correct taxonomy branch, $\bm{y}_l$ e.g. ``\textit{Shoes $\rightarrow$ Women's Shoes $\rightarrow$ Comfort}''.
 In order to reduce classification calls at runtime and to prevent error snowballing effect of a truly cascading hierarchical classifier, we solve the taxonomy classification problem as a bi-level problem.
 For example, a test listing is first classified into one of the level one classes shown in the Fig. \ref{Fig:push-pull} e.g. ``\textit{Shoes}''.
 It is then classified by the classification model corresponding to the level one taxonomy subtree identified by the predicted level one root node (e.g. ``\textit{Shoes}'').
+As noted in \cite{Julian15}, not all listings reside in leaf nodes, however, for our case, we consider $\bm{y}_l$ to be the label of the node where $\bm{x}_n$ resides, up until the root node of the taxonomy tree.
 Empirically, it has been observed that this scheme works best for taxonomies which are at-most four to five levels deep and the total number of branches for the subtrees to less than 200. 
 
 In large e-commerce companies that follow the marketplace models of business to business to customer (B2B2C) commerce, such as Rakuten, maintaining an unified product taxonomy a.k.a product catalog is very difficult. 
@@ -62,7 +62,7 @@ Needless to mention, the amount of this kind of ``label flip'' error is not nomi
 	\includegraphics[width=0.42\textwidth]{images/BU2-dataset-Dec2015}
 	\vspace{-0.6cm}
 	\caption{{\small Dataset from BU2 -- Dec 2015 snapshot. Total number of de-duplicated listings is 40 million.}}
-	\vspace{-0.6cm}
+	\vspace{-0.5cm}
 	\label{Figure_BU2-datset-earlier}
 \end{wrapfigure}
 Dataset imbalance is also a major problem in product listing datasets for building classification models.
@@ -76,10 +76,10 @@ In the experiments shown in Section \ref{Sect:results}, we use BU2's data snapsh
 	\centering
 	\vspace{-0.6cm}
 	\includegraphics[width=0.45\textwidth]{images/BU2-Dec2015-LogRegL1}
-	\vspace{-0.6cm}
+	\vspace{-0.7cm}
 	\caption{{\small Micro precision and micro F1 across 15 top level categories obtained using 10\% of the 40 million listings as test set for the dataset in the left }}
 	\label{Figure_BU2-WUC-LogRegL1}
-	\vspace{-0.4cm}
+	\vspace{-0.5cm}
 \end{wrapfigure} 
 Our initial experiments using the noisy data in Fig. \ref{Figure_BU2-datset-earlier} using a one vs. one logistic regression model with L1 regularization \cite{Yu13:EBay,LibShortText} show promising results but they do not attain a business requirement of $90\% \pm \epsilon$  mean micro precision across the level one taxonomies.
 Logistic Regression (henceforth LogReg) with L1 achieves 83\% mean micro precision (F1 values differed only in the third decimal place) for 10\% test dataset consisting of 4 million listings.
@@ -88,11 +88,22 @@ Taxonomy classification of the listings in the branches of the ``Shoes'' taxonom
 
 \begin{figure}[h]
 \centering
-	\subfloat[{{\footnotesize BU1 branch stats}}]{\label{Fig:BU1-branches+KL}\includegraphics[width=0.3\textwidth]{images/BU1-branches+KL}} \hspace{0.01cm}
-	\subfloat[{{\footnotesize AmazonJulian branch  stats}}]{\label{Fig:amazonj-branches+KL}\includegraphics[width=0.37\textwidth]{images/AmazonJulian-branches+KL}} \hspace{0.01cm}
-	\subfloat[{{\footnotesize BU2 branch stats}}]{\label{Fig:BU2-branches+KL}\includegraphics[width=0.26\textwidth]{images/BU2-branches+KL}} \hspace{0.01cm}
-	\caption{{{\small Dataset Statistics. Best viewed under magnification.}} }
+	\subfloat[{{\footnotesize BU1 dataset: Total subtrees with taxonomy - 16; Total listings in these subtrees - 12.61 million; Pearson correlation coeff. for branches vs. listings - 0.643 }}]{\label{Fig:BU1-branches+KL}\includegraphics[width=0.3\textwidth]{images/BU1-branches+KL}} \hspace{0.1cm}
+	\subfloat[{{\footnotesize AmazonJulian dataset: Total subtrees with taxonomy - 25; Total listings in these subtrees - 7.46 million; Pearson correlation coeff. for branches vs. listings - 0.269}}]{\label{Fig:amazonj-branches+KL}\includegraphics[width=0.37\textwidth]{images/AmazonJulian-branches+KL}} \hspace{0.1cm}
+	\subfloat[{{\footnotesize BU2 dataset: Total subtrees with taxonomy - 15; Total listings in these subtrees - 60 million; Pearson correlation coeff. for branches vs. listings - 0.209}}]{\label{Fig:BU2-branches+KL}\includegraphics[width=0.26\textwidth]{images/BU2-branches+KL}}
+	\vspace{-0.3cm}
+	\caption{{\small Statistics on the datasets used for evaluation of classifiers: The top row shows the number of branches for a non-zero number of listings with titles for each dataset. The bottom row shows the KL divergence of the empirical distribution of listings in the branches in each subtree to the uniform distribution. These figures give us a rough measure of imbalance in each dataset. The mean KL divergence values are: BU1 dataset - 0.872; AmazonJulian dataset - 1.654; BU2 dataset - 0.715.}}
 	\label{Fig:Dataset-statistics}
 \end{figure}
 
-Fig. \ref{Fig:Dataset-statistics} shows the number of branches and KL divergence from uniform of the three different datasets.
+An initial understanding of the imbalance in the datasets was important for us to judge expected generalization ability of several classifiers we experiment with. 
+The top row in Fig. \ref{Fig:Dataset-statistics} shows the number of branches of level one taxonomy subtrees (i.e. class labels per level one category) for each of the datasets.
+The AmazonJulian dataset (middle column) for taxonomy classification is the one obtained from \cite{Julian15}.
+The dataset from BU1 shows the best kind of imbalance with a Pearson correlation coefficient of the total number of listings to number of branches in each of the subtrees to be 0.643.
+This means that the number of branches in the subtrees correlate well with the volume of listings.
+The AmazonJulian dataset (henceforth AmazonJ) \cite{Julian15}, show the highest number of branches in the subtrees on average.
+This is possible since the extracted taxonomy may be a reflection of the navigational taxonomy which usually is listed in crawled product pages, instead of an internal data organization taxonomy.
+However, for this dataset and that for BU2, the number of branches in the subtrees do not correlate well with the volume of listings indicating a much higher level of imbalance.
+
+The bottom row of Fig. \ref{Fig:Dataset-statistics} shows the extra number of bits we would need to use to encode the listing distribution in the subtrees, if we thought the distribution was the uniform distribution i.e. balanced training set but it was actually the empirical distribution.
+The mean KL divergence values hint towards the fact that classifiers that are more or less resistant to imbalance should perform about the same for BU1 and BU2 datasets but perform significantly worse for the AmazonJ dataset under identical feature transformations (see Section \ref{Sect:results}).
