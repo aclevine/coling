@@ -35,42 +35,41 @@ Our problem here is to classify each test instance (listing), $\mathbf{x}_m$ in 
 In order to reduce classification calls at runtime and to prevent error snowballing effect of a truly cascading hierarchical classifier, we solve the taxonomy classification problem as a bi-level problem.
 For example, a test listing is first classified into one of the level one classes shown in the Fig. \ref{Fig:push-pull} e.g. ``\textit{Shoes}''.
 It is then classified by the classification model corresponding to the level one taxonomy subtree identified by the predicted level one root node (e.g. ``\textit{Shoes}'').
-Empirically, it has been observed that this scheme works best for taxonomies which are at-most level four to five deep and the total number of branches for the subtrees to less than 200. 
+Empirically, it has been observed that this scheme works best for taxonomies which are at-most four to five levels deep and the total number of branches for the subtrees to less than 200. 
 
-In large e-commerce companies that follow the marketplace models of business to business to customer (B2B2C) commerce, such as Rakuten, creating an maintaining an unified product taxonomy a.k.a product catalog is very difficult. 
-This can happen for many reasons including differences in opinions, cross-border trading and more importantly acquisitions of external companies that are profitable and niche.
-Each of the acquired companies have their own taxonomies and although they are merged under a common parent company, they operate as independent Business Units (BUs) with their own data feeds and data organization algorithms for some time.
+In large e-commerce companies that follow the marketplace models of business to business to customer (B2B2C) commerce, such as Rakuten, maintaining an unified product taxonomy a.k.a product catalog is very difficult. 
+This can happen for many reasons including cross-border trading and more importantly acquisitions of external companies that are niche.
+Each of the acquired companies has their own taxonomies and although they are merged under a common parent company, they operate as independent Business Units (BUs)  for some time with their own data feeds and data organization algorithms.
 In this paper, we perform experiments on listings data from two such BUs -- BU1 and BU2 -- belonging to Rakuten USA Inc.
-which is managed by Rakuten Ichiba, the largest e-commerce company in Japan.
+that is managed by Rakuten Ichiba, the largest e-commerce company in Japan.
 
 Dataset characteristics vary substantially from BU to BU.
-Data from BU1 is substantially corrected using large scale human annotation efforts, contracted to BU1 only, in terms of crafting rules for categorization.
+In our experiments, we found that data from BU1 is substantially corrected using large scale human annotation efforts to create rules for categorization which are contracted to BU1 only.
 This leads to lower coverage at the expense of high precision and much lower noise, however, such kind of manual efforts are not scalable.
 On the other hand, the listing feed which BU2 receives is from external data vendors who sell their feed at substantial subscription rates. 
-Moreover, even with their pricing, the taxonomies and categorization they provide are often wrong.
+However, the taxonomies and categorization these vendors provide are often wrong.
 BU2 converts taxonomies from these data vendors to their own manually and hence directly maps listings without any error correction.
-We observe such instances of error in Fig. \ref{Fig:push-pull} for the leaf node ``\textbf{Sneakers}'' and the listing ``\textit{1883 by Wolverine Women's Maisie Oxford Tan/Taupe Leather/Suede}'' - the correct leaf node should have been ``\textbf{Oxfords}'' (not shown in Fig. \ref{Fig:push-pull}).
+We observe such instances of error in Fig. \ref{Fig:push-pull} for the leaf node ``\textit{Sneakers}'' and the listing ``\textit{1883 by Wolverine Women's Maisie Oxford Tan/Taupe Leather/Suede}'' - the correct leaf node should have been ``\textit{Other} $\rightarrow$ Women's Shoes'' (not shown in Fig. \ref{Fig:push-pull}).
 
-In our scenario, due to the absence of a ground-truth training set from BU2, we rely on this dataset for training our classifiers. 
-Automatic categorizations are continuously eliminated manually either in-house (low budget) or through external organizations such as CrowdFlower\footnote{\scriptsize{\url{https://www.crowdflower.com/crowdflower-attacks-data-scientists-biggest-challenge-incomplete-messy-data/}}}.
-Needless to mention, the amount of this kind of ``label flip'' error is not nominal and it is hard to correct these without manual scans of millions of listings -- an impossible task which is mitigated to some extent for BU2's dataset using topic model based noise analysis (see Section \ref{Subsect:BU2-noise-analysis}).
-Dataset imbalance is also a major problem in product listing datasets for building classification models.
-Most loss functions that are not resistant to imbalance generalize very poorly without resorting to any subsampling techniques \cite{Chawla02:SMOTE}. 
-We, instead, resort to cross-entropy (logistic) loss functions which are more resistant to imbalance particularly with suitable regularizers (see Section \ref{Sect:results}). 
+The absence of a ground-truth training set from BU2 constrains us to rely on this noisy dataset for training our classifiers. 
+In an industrial setting, automatic categorizations are continuously eliminated manually either in-house (low budget) or through external organizations such as CrowdFlower\footnote{\scriptsize{\url{https://www.crowdflower.com/crowdflower-attacks-data-scientists-biggest-challenge-incomplete-messy-data/}}}.
+Needless to mention, the amount of this kind of ``label flip'' error is not nominal and it is hard to correct without manual scans of millions of listings -- an impossible task which is mitigated to some extent for BU2's dataset using topic model based noise analysis (Section \ref{Subsect:BU2-noise-analysis}).
+
 
 \begin{wrapfigure}{r}{0.42\textwidth}
 	\centering
-	\vspace{-0.6cm}
+	\vspace{-0.5cm}
 	\includegraphics[width=0.42\textwidth]{images/BU2-dataset-Dec2015}
 	\vspace{-0.6cm}
 	\caption{{\small Dataset from BU2 -- Dec 2015 snapshot. Total number of de-duplicated listings is 40 million.}}
 	\vspace{-0.6cm}
 	\label{Figure_BU2-datset-earlier}
 \end{wrapfigure}
-A preview of the imbalance in BU2's dataset can be viewed in Fig. \ref{Figure_BU2-datset-earlier}.  
-This dataset has a disproportionate number of listings falling into the ``Home, Patio and Furniture'' category.
-However, since BU2 gets its listing feed from external crawls and vendor's taxonomy assignments, it is hard to determine the exact reason behind the imbalance. 
-In the experiments shown in Section \ref{Sect:results}, we use BU2's data snapshot from Feb 2016 which consists of 204 million deduplicated listings from 277 merchants and 60 million listings after aggressive cleanup (see Section \ref{Subsect:BU2-noise-analysis}).
+Dataset imbalance is also a major problem in product listing datasets for building classification models.
+Most loss functions that are not resistant to imbalance generalize very poorly without resorting to any subsampling techniques \cite{Chawla02:SMOTE}. 
+We, instead, resort to cross-entropy (logistic) loss functions which are more resistant to imbalance particularly with suitable regularizers (Section \ref{Sect:results}). 
+A preview of the imbalance in BU2's dataset is shown in Fig. \ref{Figure_BU2-datset-earlier} where a disproportionate number of listings appear in the ``Home, Patio and Furniture'' category.
+In the experiments shown in Section \ref{Sect:results}, we use BU2's data snapshot from Feb 2016 which initially consists of 204 million deduplicated listings from 277 merchants, dropping down to 60 million after aggressive cleanup (Section \ref{Subsect:BU2-noise-analysis}).
 
 
 \begin{wrapfigure}{l}{0.45\textwidth}
@@ -81,13 +80,11 @@ In the experiments shown in Section \ref{Sect:results}, we use BU2's data snapsh
 	\caption{{\small Micro precision and micro F1 across 15 top level categories obtained using 10\% of the 40 million listings as test set for the dataset in the left }}
 	\label{Figure_BU2-WUC-LogRegL1}
 	\vspace{-0.4cm}
-\end{wrapfigure}
-However, this scheme may not be a good idea for Gradient Boosted Tree (henceforth GBT) \cite{Friedman:GBT} classification when number of instances is sparse compared to branch fan-out factor at level one (see Section \ref{Sect:results}).
-
-Our initial experiments using the noisy data in Fig. \ref{Figure_BU2-datset-earlier} using a one vs. one logistic regression model with L1 regularization \cite{Yu13:EBay,LibShortText} show promising results but they do not attain a business requirement of $90\% \pm \epsilon$  mean micro precision across the level one taxonomies. 
+\end{wrapfigure} 
+Our initial experiments using the noisy data in Fig. \ref{Figure_BU2-datset-earlier} using a one vs. one logistic regression model with L1 regularization \cite{Yu13:EBay,LibShortText} show promising results but they do not attain a business requirement of $90\% \pm \epsilon$  mean micro precision across the level one taxonomies.
 Logistic Regression (henceforth LogReg) with L1 achieves 83\% mean micro precision (F1 values differed only in the third decimal place) for 10\% test dataset consisting of 4 million listings.
-The level zero classification is a much easier problem and most classifiers achieve 90\% micro precision and F1 for all of the datasets considered here with GBT and Convolutional Neural Networks (henceforth CNN) \cite{Kim14} performing the best with 92\%--94\% micro precision and micro F1s. 
-Taxonomy classification of the listings in the branches of the ``Shoes'' taxonomy subtree has been very poor and this resulted in a novel way to identify the pattern of noise in whole of BU2's data using unsupervised modeling and minimal manual analysis (see Section \ref{Subsect:BU2-noise-analysis}).
+The level zero classification is a much easier problem and most classifiers achieve 90\% micro precision and F1 for all of the datasets considered here with Gradient Boosted Tree (henceforth GBT) \cite{Friedman:GBT} and Convolutional Neural Networks (henceforth CNN) \cite{Kim14} performing the best with 92\%--94\% micro precision and micro F1s. 
+Taxonomy classification of the listings in the branches of the ``Shoes'' taxonomy subtree has been very poor and this resulted in a novel way to identify the pattern of noise in whole of BU2's data using unsupervised modeling and minimal manual analysis (Section \ref{Subsect:BU2-noise-analysis}).
 
 \begin{figure}[h]
 \centering
