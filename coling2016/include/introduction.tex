@@ -20,15 +20,22 @@ Further, clues from taxonomies have are very useful in user persona detection an
 	\centering
 	\includegraphics[width=0.9\textwidth]{images/push-pull}
 	\vspace{-0.2cm}
-	\caption{{\small Merchants push new listings to a data organization and search platform. The listings are then annotated in various ways including a core taxonomy categorization component. The indexed listings together with the annotations influence search and other data organization algorithms. The relevance of the information that end users pull from the indexing platform determines the eventual conversion and revenue generation effectiveness of the e-commerce platform. In this example, taxonomy classification can be very helpful even though the item searched for is not available.}}
+	\caption{{\small Merchants push new listings to a data organization and search platform. The listings are then annotated in various ways including a core taxonomy categorization component. The indexed listings together with the annotations influence search and other data organization algorithms. The relevance of the information that end users pull from the indexing platform determines the eventual conversion and revenue generation effectiveness of the e-commerce platform. In this example, it can be easily observed how taxonomy classification can be very helpful in identifying the intent of the query.}}
 	\label{Fig:push-pull}
 \end{figure}
 \vspace{-0.5cm}
 
-In this paper, we focus on taxonomy classifications of listings in order to solve problems arising in the scenario described in Fig. \ref{Fig:push-pull}.
+In this paper, we focus on taxonomy classification of listings in order to solve problems arising in the scenario described in Fig. \ref{Fig:push-pull}.
 Generally, merchants interested in publishing their listings to an online e-commerce platform, pushes their feed to an intelligent indexing engine which then are ready to be consumed by the end user in a variety of ways.
+Scalable and accurate taxonomy categorization of listings is often among the earliest core annotation steps for these platforms.
 Feeds usually come in at 10-20 million listings/day for mid scale e-commerce companies.
-Taxonomy categorization of listings is often the first core annotation step for these platforms.
+Most of these listings are for the same product but vary in pricing and stores.
+
+Our problem here is to classify each test instance (listing), $\mathbf{x}_m$ in Fig. \ref{Fig:push-pull}, into the correct taxonomy branch, $\mathbf{y}_l$ e.g. ``\textit{Shoes $\rightarrow$ Women's Shoes $\rightarrow$ Comfort}''.
+In order to reduce classification calls at runtime and to prevent error snowballing effect of a truly cascading hierarchical classifier, we solve the taxonomy classification problem as a bi-level problem.
+For example, a test listing is first classified into one of the level one classes shown in the Fig. \ref{Fig:push-pull} e.g. ``\textit{Shoes}''.
+It is then classified by the classification model corresponding to the level one taxonomy subtree identified by the predicted level one root node (e.g. ``\textit{Shoes}'').
+Empirically, it has been observed that this scheme works best for taxonomies which are at-most level four to five deep and the total number of branches for the subtrees to less than 200. 
 
 In large e-commerce companies that follow the marketplace models of business to business to customer (B2B2C) commerce, such as Rakuten, creating an maintaining an unified product taxonomy a.k.a product catalog is very difficult. 
 This can happen for many reasons including differences in opinions, cross-border trading and more importantly acquisitions of external companies that are profitable and niche.
@@ -65,10 +72,7 @@ This dataset has a disproportionate number of listings falling into the ``Home, 
 However, since BU2 gets its listing feed from external crawls and vendor's taxonomy assignments, it is hard to determine the exact reason behind the imbalance. 
 In the experiments shown in Section \ref{Sect:results}, we use BU2's data snapshot from Feb 2016 which consists of 204 million deduplicated listings from 277 merchants and 60 million listings after aggressive cleanup (see Section \ref{Subsect:BU2-noise-analysis}).
 
-In this paper, we solve the taxonomy classification problem as a bi-level problem.
-For example, in the case of BU2 dataset, a test listing is first classified into one of the level one classes shown in the legend in Fig. \ref{Figure_BU2-datset-earlier}.
-It is then classified by the model corresponding to the level one taxonomy subtrees identified by the level one root nodes such as ``Toys'', ``Home, Furniture and Patio'' etc.
-We found this scheme to be more effective in preventing error snowballing effect in the case of a truly level-by-level cascading classification scheme.
+
 \begin{wrapfigure}{l}{0.45\textwidth}
 	\centering
 	\vspace{-0.6cm}
