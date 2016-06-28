@@ -38,6 +38,7 @@
 \usepackage{ arydshln }
 \usepackage{ caption }
 \usepackage{ makecell }
+\usepackage{ newclude }
 
 % ========== coloring ==========
 \usepackage[usenames,dvipsnames]{ color }
@@ -98,42 +99,34 @@ In this paper, we empirically evaluate classification of product listings into p
 The challenges in this task arise from fat to deep taxonomy sub-trees, high imbalance of listings residing in the leaf nodes of the branches; to the presence of noise at various levels depending upon data provenance.
 We evaluate several classifiers on two different in-house product listing datasets from a major worldwide e-commerce organization -- 
 one with minimal amount of noise and a taxonomy with a better balance of branches to listings at the leaf nodes and the other with a high level of noise and highly imbalanced number of listings in the leaf nodes of the taxonomy subtrees. 
-We also evaluate the classifiers on an open source dataset which has been obtained by crawling Amazon with an available navigational taxonomy. 
-Our experiments show that convolutional neural network with pretrained word embeddings yields the highest gains in error reduction while gradient boosted trees showing competitive performance on the in-house datasets.
+We also evaluate the classifiers on an open source dataset which has been obtained by crawling Amazon with an available \textit{navigational taxonomy}. 
+Our experiments show that both gradient boosted trees (GBTs) and convolutional neural network (CNN) with pretrained word embeddings yield the highest gains in error reduction on the in-house datasets while sparse linear classifiers and CNN outperforming GBTs on the Amazon dataset.
 
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%% Introduction
 \section{Introduction}
 \label{Sect:intro}
-\include{include/introduction}
+\include*{include/introduction}
 %%%%%%%%%%%%%%%%%%% Experimental Setup
 \section{Experimental Setup}
 \label{Sect:experimental_setup}
-
-\include{include/experimental_setup}
-
+\include*{include/experimental_setup}
 %%%%%%%%%%%%%%%%%%% Related Work
 \section{Related Work}
 \label{Sect:related}
-
-\include{include/related}
-
+\include*{include/related}
 %%%%%%%%%%%%%%%%%%% Results
 \section{Results}
 \label{Sect:results}
-
-\include{include/results}
-
-
+\include*{include/results}
 %%%%%%%%%%%%%%%%%%% Acknowledgement
 \section{Acknowledgements}
 \label{Sect:aknowledgement}
 
-
 BU-1, BU-2
 
-% include your own bib file like this:
+%%%%%%%%%%%%%%%%%%% include your own bib file like this:
 \bibliographystyle{acl}
 \bibliography{RITB-hitax-coling16}
 
