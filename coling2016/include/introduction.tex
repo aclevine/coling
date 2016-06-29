@@ -105,5 +105,13 @@ The AmazonJulian dataset (henceforth AmazonJ) \cite{Julian15}, show the highest 
 This is possible since the extracted taxonomy may be a reflection of the navigational taxonomy which usually is listed in crawled product pages, instead of an internal data organization taxonomy.
 However, for this dataset and that for BU2, the number of branches in the subtrees do not correlate well with the volume of listings indicating a much higher level of imbalance.
 
-The bottom row of Fig. \ref{Fig:Dataset-statistics} shows the extra number of bits we would need to use to encode the listing distribution in the subtrees, if we thought the distribution was the uniform distribution i.e. balanced training set but it was actually the empirical distribution.
-The mean KL divergence values hint towards the fact that classifiers that are more or less resistant to imbalance should perform about the same for BU1 and BU2 datasets but perform significantly worse for the AmazonJ dataset under identical feature transformations (see Section \ref{Sect:results}).
+The bottom row of Fig. \ref{Fig:Dataset-statistics} shows the extra number of bits we would need to use to encode the listing distribution in the subtrees, if we thought the distribution was the uniform distribution i.e. balanced training set, but it was actually the empirical distribution.
+The mean of the KL divergence values hint towards the fact that, on average, classifiers that are more or less resistant to imbalance should perform about the same for BU1 and BU2 datasets but perform significantly worse for the AmazonJ dataset under identical feature transformations (see Section \ref{Sect:results}).
+
+An earlier work in this problem area has been well documented in \cite{Sun14} by Sun et al. 
+The authors ... (gist of Chimera as it relates to our paper - specially Naive Bayes)
+
+The main contributions of our work are three folds -- 
+1) We conduct large scale experiments on taxonomy classification of product titles using state-of-the-art classifiers and conclude that the performances of GBTs and CNNs are much superior and comparable using only word unigram features which makes feature extraction very fast at runtime (Section \ref{Sect:results}). 
+2) We make use of correspondence LDA models to identify patterns of data corruption in the training set that has been obtained from product page crawls in the wild (Section \ref{Subsect:BU2-noise-analysis}). 
+3) We also show that including the list price and the root node of navigational breadcrumbs whenever available, boost prediction performance significantly.
