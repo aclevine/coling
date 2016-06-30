@@ -15,14 +15,27 @@ No stopword removal for CNN
 
 \subfloat[{BU1 prediction using Word Bigram Count features}]{\label{Figure_BU1-WBC}\includegraphics[width=0.35\textwidth]{images/BU1-WBC-predictions}} \hspace{0.01cm}
 \subfloat[{BU1 prediction using Word Bigram Bi Positional Count features}]{\label{Figure_BU1-WBBPC}\includegraphics[width=0.35\textwidth]{images/BU1-WBBPC-predictions}} 
-\caption{{Predictions on Business Unit 1 test set} }
+\caption{{Predictions on BU1 test set for different classifiers. The CNN classifier only uses title strings and thus shows constant curves in all plots.} }
 \label{Figure_BU1-predictions}
 \end{wrapfigure}
 
-\begin{wrapfigure}{r}{0.4\textwidth}
+\begin{wrapfigure}{r}{0.45\textwidth}
 \centering
-\includegraphics[width=0.35\textwidth]{images/BU1-mean-micro-precision}
+\includegraphics[width=0.43\textwidth]{images/BU1-mean-micro-precision}
+\caption{Mean micro precisions of different classifiers over different feature setups except CNN.}
 \label{Figure_BU1-predictions-feature-averages}
+\end{wrapfigure}
+Some text
+
+
+\subsection{Classification Improvements with List Price on BU2 Dataset}
+\label{Subsect:BU2-classification-improve-list-price}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\centering
+	\includegraphics[width=0.48\textwidth]{images/BU2-gbt-feature-improvements}
+	\caption{Improvements in classification performance of GBTs on the BU2 dataset}
+	\label{Figure_BU2-gbt-feature-improvements}
 \end{wrapfigure}
 Some text
 

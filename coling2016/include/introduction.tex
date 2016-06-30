@@ -50,10 +50,12 @@ On the other hand, the listing feed which BU2 receives is from external data ven
 However, the taxonomies and categorization these vendors provide are often wrong.
 BU2 converts taxonomies from these data vendors to their own manually and hence directly maps listings without any error correction.
 We observe such instances of error in Fig. \ref{Fig:push-pull} for the leaf node ``\textit{Sneakers}'' and the listing ``\textit{1883 by Wolverine Women's Maisie Oxford Tan/Taupe Leather/Suede}'' - the correct leaf node should have been ``\textit{Other} $\rightarrow$ Women's Shoes'' (not shown in Fig. \ref{Fig:push-pull}).
+Much of the problems arising in taxonomy classification of product listings has been well documented in \cite{Sun14} and we do not elaborate more on them unless necessary.
 
 The absence of a ground-truth training set from BU2 constrains us to rely on this noisy dataset for training our classifiers. 
-In an industrial setting, automatic categorizations are continuously eliminated manually either in-house (low budget) or through external organizations such as CrowdFlower\footnote{\scriptsize{\url{https://www.crowdflower.com/crowdflower-attacks-data-scientists-biggest-challenge-incomplete-messy-data/}}}.
 Needless to mention, the amount of this kind of ``label flip'' error is not nominal and it is hard to correct without manual scans of millions of listings -- an impossible task which is mitigated to some extent for BU2's dataset using topic model based noise analysis (Section \ref{Subsect:BU2-noise-analysis}).
+In an industrial setting, automatic categorizations are continuously eliminated manually either in-house (low budget) or through external organizations such as CrowdFlower\footnote{\scriptsize{\url{https://www.crowdflower.com/crowdflower-attacks-data-scientists-biggest-challenge-incomplete-messy-data/}}} \cite{Sun14}.
+However, since manual annotation is expensive, using some proxy for ground truths as a viable alternative has also been mentioned in \cite{Shen12}.
 
 
 \begin{wrapfigure}{r}{0.42\textwidth}
@@ -89,8 +91,8 @@ Taxonomy classification of the listings in the branches of the ``Shoes'' taxonom
 \begin{figure}[h]
 \centering
 	\subfloat[{{\footnotesize BU1 dataset: Total subtrees with taxonomy - 16; Total listings in these subtrees - 12.61 million; Pearson correlation coeff. for branches vs. listings - 0.643 }}]{\label{Fig:BU1-branches+KL}\includegraphics[width=0.3\textwidth]{images/BU1-branches+KL}} \hspace{0.1cm}
-	\subfloat[{{\footnotesize AmazonJulian dataset: Total subtrees with taxonomy - 25; Total listings in these subtrees - 7.46 million; Pearson correlation coeff. for branches vs. listings - 0.269}}]{\label{Fig:amazonj-branches+KL}\includegraphics[width=0.37\textwidth]{images/AmazonJulian-branches+KL}} \hspace{0.1cm}
-	\subfloat[{{\footnotesize BU2 dataset: Total subtrees with taxonomy - 15; Total listings in these subtrees - 60 million; Pearson correlation coeff. for branches vs. listings - 0.209}}]{\label{Fig:BU2-branches+KL}\includegraphics[width=0.26\textwidth]{images/BU2-branches+KL}}
+	\subfloat[{{\footnotesize AmazonJulian dataset: Total subtrees with taxonomy - 25; Total listings in these subtrees - 7.46 million; Pearson correlation coeff. for branches vs. listings - 0.269. Top fig. vertical scale is 10x of Figs. \ref{Fig:BU1-branches+KL} and \ref{Fig:BU2-branches+KL}}}]{\label{Fig:amazonj-branches+KL}\includegraphics[width=0.35\textwidth]{images/AmazonJulian-branches+KL}} \hspace{0.1cm}
+	\subfloat[{{\footnotesize BU2 dataset: Total subtrees with taxonomy - 15; Total listings in these subtrees - 60 million; Pearson correlation coeff. for branches vs. listings - 0.209}}]{\label{Fig:BU2-branches+KL}\includegraphics[width=0.27\textwidth]{images/BU2-branches+KL}}
 	\vspace{-0.3cm}
 	\caption{{\small Statistics on the datasets used for evaluation of classifiers: The top row shows the number of branches for a non-zero number of listings with titles for each dataset. The bottom row shows the KL divergence of the empirical distribution of listings in the branches in each subtree to the uniform distribution. These figures give us a rough measure of imbalance in each dataset. The mean KL divergence values are: BU1 dataset - 0.872; AmazonJulian dataset - 1.654; BU2 dataset - 0.715.}}
 	\label{Fig:Dataset-statistics}
@@ -114,4 +116,4 @@ The authors ... (gist of Chimera as it relates to our paper - specially Naive Ba
 The main contributions of our work are three folds -- 
 1) We conduct large scale experiments on taxonomy classification of product titles using state-of-the-art classifiers and conclude that the performances of GBTs and CNNs are much superior and comparable using only word unigram features which makes feature extraction very fast at runtime (Section \ref{Sect:results}). 
 2) We make use of correspondence LDA models to identify patterns of data corruption in the training set that has been obtained from product page crawls in the wild (Section \ref{Subsect:BU2-noise-analysis}). 
-3) We also show that including the list price and the root node of navigational breadcrumbs whenever available, boost prediction performance significantly.
+3) We also show that including the list price and the root node of navigational breadcrumbs whenever available, boost prediction performance significantly (Section \ref{Subsect:BU2-classification-improve-list-price}).
