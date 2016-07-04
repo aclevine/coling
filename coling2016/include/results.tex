@@ -23,6 +23,7 @@ The average micro-precisions for the two datasets and the dataset from BU1 are s
 	\vspace{-0.3cm}
 \end{wraptable}
 It is observed that for the BU datasets, where $\log(N/B)$ with $N$ being the total number of listings and $B$ being the total number of branches (classes) is relatively high -- $11.54$ for BU2 and $9.27$ for BU1, but only $6.02$ for AmazonJ -- performances of GBT and CNN with pretraining are comparable for most of the subtrees and are better with statistical significance than the other classifiers.
+
 \begin{wrapfigure}{l}{0.65\textwidth}
 	\vspace{-0.5cm}
 	\centering
@@ -32,20 +33,24 @@ It is observed that for the BU datasets, where $\log(N/B)$ with $N$ being the to
 	\label{Figure_amazonj-WUC-predictions}
 	\vspace{-0.4cm}
 \end{wrapfigure}
+The ``\textit{CDs and Vinyl}'' category has more than $500$ branches in the AmazonJ dataset proved to be the most difficult one for all the classifiers.
+We will like to investigate on this category in future.
+The ``\textit{Books}'' and ``\textit{Grocery}'' subtrees were extremely imbalanced.
+The root node of these subtrees had almost all the listings while the other branches mostly had less than 10 listings. 
+The classifiers got high precision since almost all of the branches were excluded from prediction.
 
 
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\vspace{-0.5cm}
+\begin{wrapfigure}{r}{0.48\textwidth}
+	\vspace{-0.8cm}
 	\centering
-	\includegraphics[width=0.5\textwidth]{images/BU2-WUC-predictions}
+	\includegraphics[width=0.48\textwidth]{images/BU2-WUC-predictions}
 	\vspace{-0.4cm}
 	\caption{Micro precisions for 10\% test set from cleaned BU2 dataset}
 	\label{Figure_BU2-WUC-predictions}
 	\vspace{-0.4cm}
 \end{wrapfigure}
-Some text
+Overall, from both Figs. \ref{Figure_amazonj-WUC-predictions} and \ref{Figure_BU2-WUC-predictions}, we observe that Gradient Boosted Trees and Convolutional Neural Networks perform quite well even in extreme data imbalance.
+GBTs need more parameter tuning per subtree category for datasets resembling AmazonJ.
+However, in most e-commerce companies, product listing datasets tend to be noisy but follow general trends of BU1 and BU2 datasets. 
 
-\subsection{Performance of Classifiers w.r.t. Dataset Imbalance}
-\label{Subsect:results>imbalance-performance-expectations}
 
-That's all folks!
